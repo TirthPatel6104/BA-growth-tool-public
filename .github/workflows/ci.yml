@@ -6,7 +6,7 @@ name: CI
 
 on:
   push:
-    branches: ["main", "pipeline/*"]
+    branches: ["main", "clean-main", "pipeline/*"]
   pull_request:
     branches: ["main"]
 
