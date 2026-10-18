@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bagt_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=production
+      - LOG_LEVEL=INFO
+      # Default: zero-config SQLite demo file seeded at image build time.
+      # Point at PostgreSQL instead (run `alembic upgrade head` as a deploy step):
+      # - DATABASE_URL=postgresql://bagt:bagt@postgres:5432/bagt
+      # - BAGT_AUTO_MIGRATE=true
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bagt_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

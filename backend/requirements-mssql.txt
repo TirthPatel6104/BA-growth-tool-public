@@ -1,0 +1,9 @@
+# Optional: Microsoft SQL Server support.
+#
+#   pip install -r requirements.txt -r requirements-mssql.txt
+#
+# Also needs a system ODBC driver, e.g. "ODBC Driver 17 for SQL Server"
+# (Windows installer / unixodbc + msodbcsql17 on Linux).  Then point the
+# app at the server with DATABASE_URL=mssql+pyodbc://... or the BAGT_SQL_*
+# variables (see .env.example).
+pyodbc>=5.0

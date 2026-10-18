@@ -1,0 +1,1062 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "BA Growth Tool API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Enterprise telemetry and health check endpoint.",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Check Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Read Root",
+        "operationId": "read_root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test-connection": {
+      "get": {
+        "summary": "Test Connection",
+        "description": "Verify the database connection (SQLite / PostgreSQL / SQL Server).",
+        "operationId": "test_connection_test_connection_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tables": {
+      "get": {
+        "summary": "Get Tables",
+        "description": "List all tables in the database.",
+        "operationId": "get_tables_tables_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/species": {
+      "get": {
+        "summary": "List Species",
+        "description": "Return all supported species configurations.",
+        "operationId": "list_species_models_species_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/forest-units": {
+      "get": {
+        "summary": "List Forest Units",
+        "description": "Return all supported forest units.",
+        "operationId": "list_forest_units_models_forest_units_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/combinations": {
+      "get": {
+        "summary": "List Valid Combinations",
+        "description": "Return configured model definitions (species models + forest-unit models).",
+        "operationId": "list_valid_combinations_models_combinations_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/species-list": {
+      "get": {
+        "summary": "Api Species List",
+        "operationId": "api_species_list_api_species_list_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bagrowth/summary-stats": {
+      "get": {
+        "summary": "Api Bagrowth Summary Stats",
+        "operationId": "api_bagrowth_summary_stats_api_bagrowth_summary_stats_get",
+        "parameters": [
+          {
+            "name": "species_group",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Species Group"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bagrowth/formula-calculation": {
+      "get": {
+        "summary": "Api Bagrowth Formula Calculation",
+        "operationId": "api_bagrowth_formula_calculation_api_bagrowth_formula_calculation_get",
+        "parameters": [
+          {
+            "name": "species_group",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Species Group"
+            }
+          },
+          {
+            "name": "model_version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "1.0",
+              "title": "Model Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model-coefficients": {
+      "get": {
+        "summary": "Api Model Coefficients",
+        "description": "Return coefficients strictly from permanent tblRGRCoefficients.",
+        "operationId": "api_model_coefficients_api_model_coefficients_get",
+        "parameters": [
+          {
+            "name": "species_group",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Species Group"
+            }
+          },
+          {
+            "name": "model_version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "1.0",
+              "title": "Model Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bagrowth/calculate": {
+      "get": {
+        "summary": "Api Bagrowth Calculate",
+        "operationId": "api_bagrowth_calculate_api_bagrowth_calculate_get",
+        "parameters": [
+          {
+            "name": "species_group",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Species Group"
+            }
+          },
+          {
+            "name": "current_year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Current Year"
+            }
+          },
+          {
+            "name": "projection_years",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Projection Years"
+            }
+          },
+          {
+            "name": "model_version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "1.0",
+              "title": "Model Version"
+            }
+          },
+          {
+            "name": "refresh",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Refresh"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/stored": {
+      "get": {
+        "summary": "List Stored Models",
+        "description": "List all coefficient records stored in the database.",
+        "operationId": "list_stored_models_models_stored_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/training-results": {
+      "get": {
+        "summary": "Get Training Results",
+        "description": "Return the latest training results JSON from artifacts/reports.",
+        "operationId": "get_training_results_models_training_results_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/train": {
+      "post": {
+        "summary": "Train Models",
+        "description": "Start a training job asynchronously.\n\nReturns immediately with a job_id.  Poll GET /models/training-status/{job_id}\nto track progress.  Training 13 models with full historical data (1977-2024)\ntakes 1-2 hours; this endpoint never blocks.",
+        "operationId": "train_models_models_train_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/training-status": {
+      "get": {
+        "summary": "List Training Jobs",
+        "description": "Return summary of all training jobs (running and completed).",
+        "operationId": "list_training_jobs_models_training_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/training-status/{job_id}": {
+      "get": {
+        "summary": "Get Training Status",
+        "description": "Poll detailed status for a specific training job.",
+        "operationId": "get_training_status_models_training_status__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/predict": {
+      "post": {
+        "summary": "Predict",
+        "description": "Predict RGR and BA growth for a single observation.\n\nIf easting/northing provided, TCR is resolved from the spatial shapefile.\nIf projection_years > 0, a multi-year BA projection is returned.",
+        "operationId": "predict_models_predict_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/predict/batch": {
+      "post": {
+        "summary": "Predict Batch",
+        "description": "Batch prediction endpoint.  Expects a list of dicts each containing:\nSpecCode, ForestUnit, BA, AGSfrac, TCR, DQ, q, Cut.",
+        "operationId": "predict_batch_models_predict_batch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchPredictRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/auto-predict": {
+      "post": {
+        "summary": "Auto Predict",
+        "description": "Automatically derive representative model inputs from extracted species data,\nrun predictions, and return summary + yearly projection + per-plot estimates.",
+        "operationId": "auto_predict_models_auto_predict_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutoPredictRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/benchmarks/models": {
+      "get": {
+        "summary": "Benchmark Registry",
+        "description": "Candidate algorithms, CV strategies and feature sets the benchmark understands.",
+        "operationId": "benchmark_registry_api_benchmarks_models_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/benchmarks": {
+      "get": {
+        "summary": "Benchmark Latest",
+        "description": "Latest benchmark report (JSON written by scripts/benchmark_models.py or POST /api/benchmarks/run).",
+        "operationId": "benchmark_latest_api_benchmarks_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/benchmarks/{model_group}": {
+      "get": {
+        "summary": "Benchmark For Group",
+        "description": "One model group's section of the latest benchmark report.",
+        "operationId": "benchmark_for_group_api_benchmarks__model_group__get",
+        "parameters": [
+          {
+            "name": "model_group",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Group"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/benchmarks/run": {
+      "post": {
+        "summary": "Benchmark Run",
+        "description": "Start a benchmark job in the background.  Poll /models/training-status/{job_id};\nwhen it completes, GET /api/benchmarks returns the new leaderboard.",
+        "operationId": "benchmark_run_api_benchmarks_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BenchmarkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AutoPredictRequest": {
+        "properties": {
+          "species_abbrev": {
+            "type": "string",
+            "title": "Species Abbrev",
+            "description": "Species abbreviation, e.g. Mh, Or, Cedar"
+          },
+          "forest_unit": {
+            "type": "string",
+            "title": "Forest Unit",
+            "description": "Forest unit, e.g. TH1, HDSL2"
+          },
+          "current_year": {
+            "type": "integer",
+            "title": "Current Year",
+            "description": "Projection start year"
+          },
+          "projection_years": {
+            "type": "integer",
+            "title": "Projection Years",
+            "description": "Number of years to project",
+            "default": 10
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "default": "1.0"
+          }
+        },
+        "type": "object",
+        "required": [
+          "species_abbrev",
+          "forest_unit",
+          "current_year"
+        ],
+        "title": "AutoPredictRequest"
+      },
+      "BatchPredictRequest": {
+        "properties": {
+          "rows": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "default": "1.0"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rows"
+        ],
+        "title": "BatchPredictRequest"
+      },
+      "BenchmarkRequest": {
+        "properties": {
+          "groups": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Groups",
+            "description": "Model groups (e.g. ['Mh','FU_TH1']); default = all"
+          },
+          "models": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Models",
+            "description": "Algorithm names from /api/benchmarks/models; default = all available"
+          },
+          "cv_strategy": {
+            "type": "string",
+            "title": "Cv Strategy",
+            "description": "group | temporal | kfold",
+            "default": "group"
+          },
+          "n_splits": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 2.0,
+            "title": "N Splits",
+            "default": 5
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "default": 42
+          },
+          "feature_set": {
+            "type": "string",
+            "title": "Feature Set",
+            "description": "base | extended",
+            "default": "base"
+          },
+          "alpha": {
+            "type": "number",
+            "exclusiveMaximum": 0.5,
+            "exclusiveMinimum": 0.0,
+            "title": "Alpha",
+            "description": "Prediction-interval miscoverage",
+            "default": 0.1
+          },
+          "leakage_check": {
+            "type": "boolean",
+            "title": "Leakage Check",
+            "default": true
+          },
+          "temporal_check": {
+            "type": "boolean",
+            "title": "Temporal Check",
+            "default": true
+          },
+          "intervals": {
+            "type": "boolean",
+            "title": "Intervals",
+            "default": true
+          },
+          "importance": {
+            "type": "boolean",
+            "title": "Importance",
+            "default": true
+          },
+          "populate_tcr": {
+            "type": "boolean",
+            "title": "Populate Tcr",
+            "description": "Override TCR from the shapefile during extraction",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "BenchmarkRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "PredictRequest": {
+        "properties": {
+          "spec_code": {
+            "type": "integer",
+            "title": "Spec Code",
+            "description": "Species code, e.g. 30 = Hard Maple"
+          },
+          "forest_unit": {
+            "type": "string",
+            "title": "Forest Unit",
+            "description": "Forest unit, e.g. 'TH1'"
+          },
+          "BA": {
+            "type": "number",
+            "title": "Ba",
+            "description": "Basal area (m\u00b2/ha)"
+          },
+          "AGSfrac": {
+            "type": "number",
+            "title": "Agsfrac",
+            "description": "AGS fraction (0\u20131), provide measured value"
+          },
+          "TCR": {
+            "type": "integer",
+            "title": "Tcr",
+            "description": "Timber capability rating (1\u20137)",
+            "default": 5
+          },
+          "DQ": {
+            "type": "number",
+            "title": "Dq",
+            "description": "Quadratic mean diameter (cm)"
+          },
+          "q": {
+            "type": "number",
+            "title": "Q",
+            "description": "q-factor"
+          },
+          "Cut": {
+            "type": "integer",
+            "title": "Cut",
+            "description": "Cutting indicator (0 or 1)",
+            "default": 0
+          },
+          "easting": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Easting",
+            "description": "Easting (NAD83 EPSG:26917)"
+          },
+          "northing": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Northing",
+            "description": "Northing (NAD83 EPSG:26917)"
+          },
+          "projection_years": {
+            "type": "integer",
+            "title": "Projection Years",
+            "description": "Years to project (0 = single step)",
+            "default": 0
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "default": "1.0"
+          }
+        },
+        "type": "object",
+        "required": [
+          "spec_code",
+          "forest_unit",
+          "BA",
+          "AGSfrac",
+          "DQ",
+          "q"
+        ],
+        "title": "PredictRequest"
+      },
+      "TrainRequest": {
+        "properties": {
+          "species_abbrev": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Species Abbrev",
+            "description": "Train one species model, e.g. 'Mh', 'Cedar'"
+          },
+          "forest_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forest Unit",
+            "description": "Train one forest-unit model, e.g. 'TH1', 'HDSL2'"
+          },
+          "train_all": {
+            "type": "boolean",
+            "title": "Train All",
+            "description": "Train all configured models",
+            "default": false
+          },
+          "save_to_db": {
+            "type": "boolean",
+            "title": "Save To Db",
+            "description": "Persist coefficients",
+            "default": true
+          },
+          "populate_tcr": {
+            "type": "boolean",
+            "title": "Populate Tcr",
+            "description": "Enrich TCR from shapefile",
+            "default": true
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "default": "1.0"
+          }
+        },
+        "type": "object",
+        "title": "TrainRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

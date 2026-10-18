@@ -1,0 +1,9 @@
+# Optional extras for the model benchmark (backend/ml, scripts/benchmark_models.py).
+#
+#   pip install -r requirements.txt -r requirements-ml.txt
+#
+# Without these the benchmark still runs: the registry simply skips the
+# algorithms whose back-end is missing (xgboost, lightgbm, mixed_effects).
+statsmodels>=0.14      # linear mixed model with a random intercept per plot
+xgboost>=2.0           # gradient boosting (depth-limited, subsampled)
+lightgbm>=4.0          # leaf-wise gradient boosting

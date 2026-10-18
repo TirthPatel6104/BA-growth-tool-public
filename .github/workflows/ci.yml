@@ -1,0 +1,153 @@
+# =============================================================================
+# Basal Area Growth Tool – CI Pipeline
+# Runs on every push / pull request to main and pipeline/* branches
+# =============================================================================
+name: CI
+
+on:
+  push:
+    branches: ["main", "pipeline/*"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1: Lint & type-check (fast feedback)
+  # ---------------------------------------------------------------------------
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install lint dependencies
+        run: |
+          pip install --upgrade pip
+          pip install flake8 mypy pandas-stubs numpy
+
+      - name: flake8 (style)
+        run: |
+          flake8 backend/ \
+            --max-line-length=110 \
+            --exclude=backend/__pycache__,backend/.venv \
+            --count --statistics
+        continue-on-error: true   # report violations but don't block CI
+
+      - name: mypy (type checking – non-blocking)
+        run: |
+          mypy backend/models/ backend/prediction/ \
+            --ignore-missing-imports \
+            --no-strict-optional
+        continue-on-error: true # warn but don't fail CI yet
+
+  # ---------------------------------------------------------------------------
+  # Job 2: Unit tests (SQLite scratch DB via Alembic – no database server)
+  # ---------------------------------------------------------------------------
+  unit-tests:
+    name: Unit Tests (offline)
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install backend dependencies
+        run: |
+          pip install --upgrade pip
+          pip install \
+            pytest pytest-cov \
+            numpy pandas scikit-learn \
+            fastapi httpx pydantic python-dotenv \
+            "sqlalchemy>=2.0,<3.0" alembic \
+            shapely pyproj
+          pip install -r backend/requirements-ml.txt   # optional benchmark back-ends
+
+      - name: Alembic migration sanity check (fresh SQLite file)
+        run: |
+          alembic upgrade head
+          alembic current
+        working-directory: backend
+        env:
+          DATABASE_URL: sqlite:///./ci_migration_check.db
+
+      - name: Run unit tests with coverage
+        run: |
+          pytest tests/backend/ \
+            -v \
+            -m "not integration" \
+            --tb=short \
+            --cov=backend \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml
+        working-directory: ${{ github.workspace }}
+
+      - name: Model benchmark smoke test (synthetic demo DB, fast models)
+        run: |
+          python scripts/seed_demo_db.py
+          python scripts/benchmark_models.py --group Mh --group FU_TH1 --fast --folds 3 \
+            --no-intervals --no-importance --output artifacts/benchmarks/ci_smoke.json
+          python -c "import json; r=json.load(open('artifacts/benchmarks/ci_smoke.json')); print(r['summary'])"
+        working-directory: backend
+        env:
+          DATABASE_URL: sqlite:///./ci_benchmark.db
+          PYTHONIOENCODING: utf-8
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+      - name: Coverage summary (PR comment)
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage.xml
+          badge: true
+          format: markdown
+          output: both
+        continue-on-error: true
+
+  # ---------------------------------------------------------------------------
+  # Job 3: Frontend – lint & build check
+  # ---------------------------------------------------------------------------
+  frontend:
+    name: Frontend Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+        continue-on-error: true
+
+      - name: ESLint
+        run: npm run lint
+        working-directory: frontend
+        continue-on-error: true
+
+      - name: TypeScript build check
+        run: npm run build
+        working-directory: frontend
+        continue-on-error: true   # pre-existing unused-import warnings in frontend code
+
+ 

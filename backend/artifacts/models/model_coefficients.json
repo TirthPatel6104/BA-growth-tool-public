@@ -1,0 +1,23 @@
+{
+  "source": "SYNTHETIC DEMO - coefficients fitted to the generated dataset in db/seed.py, not to any real inventory data",
+  "model_group": "Mh (Hard Maple) - used only as a fallback when tblRGRCoefficients is empty",
+  "intercept": 0.0580518564343036,
+  "coefficients": {
+    "BA": -0.0011621401918078793,
+    "BA2": 1.4905081754256856e-05,
+    "AGSfrac": 0.00905639774103154,
+    "TCR": 0.0026739922875663987,
+    "DQ": -0.00025110048881374266,
+    "q": 0.0029913506785308867,
+    "Cut": -0.002935626167790812
+  },
+  "model_info": {
+    "n_samples": 164,
+    "n_features": 7,
+    "model_type": "Linear Regression",
+    "training_date": "2026-10-11 23:56:23.256914",
+    "r2_score": 0.4206300614287869,
+    "rmse": 0.00814458867245117,
+    "synthetic": true
+  }
+}

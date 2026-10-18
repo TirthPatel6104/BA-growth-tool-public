@@ -1,0 +1,85 @@
+# Environments and secrets
+.env
+.env.*
+*.env
+!.env.example
+!backend/.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+credentials.json
+secrets.*
+
+# Databases and Local Data
+*.db
+*.db.legacy-*.bak
+*.sqlite
+*.sqlite3
+*.ldf
+*.mdf
+*.shp
+*.dbf
+*.shx
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+.venv*/
+.pytest_cache/
+.coverage
+coverage.xml
+coverage_html/
+htmlcov/
+
+# Node / Web Frontend
+node_modules/
+dist/
+build/
+.cache/
+test-results/
+playwright-report/
+blob-report/
+
+# IDE and OS
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary Reports
+*.log
+backend/artifacts/reports/*.csv
+
+# Model artifacts – only the clearly-labelled synthetic demo files are committed
+backend/artifacts/**
+!backend/artifacts/
+!backend/artifacts/models/
+!backend/artifacts/models/model_coefficients.json
+!backend/artifacts/reports/
+!backend/artifacts/reports/training_results_synthetic_demo.json
+!backend/artifacts/benchmarks/
+!backend/artifacts/benchmarks/benchmark_synthetic_demo.json
+!backend/artifacts/benchmarks/LEADERBOARD.md
+*.pkl
+*.pickle
+*.joblib
+
+# Site-specific stored procedures / spatial data are never committed
+backend/sql/sp_*.sql
+*.sqlite-journal
+*.db-wal
+*.db-shm
+
+# Browser test snapshots (regenerate locally)
+**/*-snapshots/
+*-snapshots/
+**/*-snapshots/**
