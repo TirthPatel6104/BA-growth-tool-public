@@ -14,7 +14,7 @@ interface HeaderProps {
   toggleTheme: () => void;
 }
 
-const REPO_URL = "https://github.com/TirthPatel6104/BA-growth-tool";
+const REPO_URL = "https://github.com/TirthPatel6104/BA-growth-tool-public";
 
 export function Header({
   language,
